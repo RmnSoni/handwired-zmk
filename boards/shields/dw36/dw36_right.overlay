@@ -50,38 +50,5 @@
         , <&pro_micro 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (3,6) RAISE
         , <&pro_micro 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (3,7) BKSP
         ;
-    };    kscan0: kscan {
-        compatible = "zmk,kscan-gpio-direct";
-        label = "KSCAN";
-        input-gpios
-        // Right half - ONLY the 18 physical keys on this half  
-        // These map to the RIGHT side positions in the matrix transform
-        
-        // Physical row 0 → Matrix row 0, columns 5-9
-        = <&pro_micro 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // Y → RC(0,5)
-        , <&pro_micro 3 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // U → RC(0,6)
-        , <&pro_micro 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // I → RC(0,7)
-        , <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // O → RC(0,8)
-        , <&pro_micro 21 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // P → RC(0,9)
-
-        // Physical row 1 → Matrix row 1, columns 5-9
-        , <&pro_micro 0 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // H → RC(1,5)
-        , <&pro_micro 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // J → RC(1,6)
-        , <&pro_micro 7 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // K → RC(1,7)
-        , <&pro_micro 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // L → RC(1,8)
-        , <&pro_micro 20 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // ; → RC(1,9)
-
-        // Physical row 2 → Matrix row 2, columns 5-9
-        , <&pro_micro 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // N → RC(2,5)
-        , <&pro_micro 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // M → RC(2,6)
-        , <&pro_micro 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // , → RC(2,7)
-        , <&pro_micro 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // . → RC(2,8)
-        , <&pro_micro 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // / → RC(2,9)
-
-        // Physical thumb row → Matrix row 3, columns 5-7
-        , <&pro_micro 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // ENT → RC(3,5)
-        , <&pro_micro 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // RAISE → RC(3,6)
-        , <&pro_micro 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // ALT → RC(3,7)
-        ;
-    };
+    }; 
 };
