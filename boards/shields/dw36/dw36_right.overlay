@@ -16,56 +16,72 @@
         compatible = "zmk,matrix-transform";
         columns = <10>;
         rows = <4>;
-// Unified matrix transform for split keyboard  
-// Right half physical keys map to right side of matrix
-// | Q  | W  | E  | R  | T  |                 | Y  | U  | I  | O  | P  |
-// | A  | S  | D  | F  | G  |                 | H  | J  | K  | L  | ;  |
-// | Z  | X  | C  | V  | B  |                 | N  | M  | ,  | .  | /  |
-//             |GUI |LWR |SPC|                 |ENT |RSE |ALT|
+// The keymap expects a unified layout, but each half will contribute its portion
         map = <
-RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(0,4)  RC(0,5) RC(0,6) RC(0,7) RC(0,8) RC(0,9)
-RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(1,4)  RC(1,5) RC(1,6) RC(1,7) RC(1,8) RC(1,9)
-RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4)  RC(2,5) RC(2,6) RC(2,7) RC(2,8) RC(2,9)
-                RC(3,2) RC(3,3) RC(3,4)  RC(3,5) RC(3,6) RC(3,7)
+  RC(0,5) RC(0,6) RC(0,7) RC(0,8) RC(0,9)
+  RC(1,5) RC(1,6) RC(1,7) RC(1,8) RC(1,9)
+  RC(2,5) RC(2,6) RC(2,7) RC(2,8) RC(2,9)
+                  RC(3,5) RC(3,6) RC(3,7)
         >;
     };
 
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-direct";
         label = "KSCAN";
+        // Right half provides exactly 18 keys for positions that will be used
         input-gpios
-        // Right half - 18 keys total (5+5+5+3)
-        // Pin layout:
-        //  1  3  6 18 21  (Y U I O P)
-        //  0  4  7 15 20  (H J K L ;)
-        //  2  5  8 14 19  (N M , . /)
-        // 10 16  9 -- --  (ENT RAISE ALT -- --)
+        // Order: right keys (0,5)-(0,9), then (1,5)-(1,9), etc.
+        = <&pro_micro 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (0,5) Y
+        , <&pro_micro 3 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (0,6) U
+        , <&pro_micro 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (0,7) I
+        , <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (0,8) O
+        , <&pro_micro 21 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (0,9) P
+        , <&pro_micro 0 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (1,5) H
+        , <&pro_micro 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (1,6) J
+        , <&pro_micro 7 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (1,7) K
+        , <&pro_micro 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (1,8) L
+        , <&pro_micro 20 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (1,9) ;
+        , <&pro_micro 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (2,5) N
+        , <&pro_micro 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (2,6) M
+        , <&pro_micro 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (2,7) ,
+        , <&pro_micro 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (2,8) .
+        , <&pro_micro 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (2,9) /
+        , <&pro_micro 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (3,5) ENTER
+        , <&pro_micro 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // (3,6) RAISE
+        , <&pro_micro 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // (3,7) BKSP
+        ;
+    };    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-direct";
+        label = "KSCAN";
+        input-gpios
+        // Right half - ONLY the 18 physical keys on this half  
+        // These map to the RIGHT side positions in the matrix transform
         
-        // Row 0: Y U I O P (positions RC(0,5) to RC(0,9))
-        = <&pro_micro 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // Y - RC(0,5)
-        , <&pro_micro 3 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // U - RC(0,6)
-        , <&pro_micro 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // I - RC(0,7)
-        , <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // O - RC(0,8)
-        , <&pro_micro 21 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // P - RC(0,9)
+        // Physical row 0 → Matrix row 0, columns 5-9
+        = <&pro_micro 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // Y → RC(0,5)
+        , <&pro_micro 3 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // U → RC(0,6)
+        , <&pro_micro 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // I → RC(0,7)
+        , <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // O → RC(0,8)
+        , <&pro_micro 21 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // P → RC(0,9)
 
-        // Row 1: H J K L ; (positions RC(1,5) to RC(1,9))
-        , <&pro_micro 0 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // H - RC(1,5)
-        , <&pro_micro 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // J - RC(1,6)
-        , <&pro_micro 7 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // K - RC(1,7)
-        , <&pro_micro 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // L - RC(1,8)
-        , <&pro_micro 20 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // ; - RC(1,9)
+        // Physical row 1 → Matrix row 1, columns 5-9
+        , <&pro_micro 0 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // H → RC(1,5)
+        , <&pro_micro 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // J → RC(1,6)
+        , <&pro_micro 7 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // K → RC(1,7)
+        , <&pro_micro 15 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // L → RC(1,8)
+        , <&pro_micro 20 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // ; → RC(1,9)
 
-        // Row 2: N M , . / (positions RC(2,5) to RC(2,9))
-        , <&pro_micro 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // N - RC(2,5)
-        , <&pro_micro 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // M - RC(2,6)
-        , <&pro_micro 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // , - RC(2,7)
-        , <&pro_micro 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // . - RC(2,8)
-        , <&pro_micro 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // / - RC(2,9)
+        // Physical row 2 → Matrix row 2, columns 5-9
+        , <&pro_micro 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // N → RC(2,5)
+        , <&pro_micro 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // M → RC(2,6)
+        , <&pro_micro 8 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // , → RC(2,7)
+        , <&pro_micro 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // . → RC(2,8)
+        , <&pro_micro 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // / → RC(2,9)
 
-        // Row 3: ENT RAISE ALT (positions RC(3,5) to RC(3,7))
-        , <&pro_micro 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // ENT - RC(3,5)
-        , <&pro_micro 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // RAISE - RC(3,6)
-        , <&pro_micro 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // ALT - RC(3,7)
+        // Physical thumb row → Matrix row 3, columns 5-7
+        , <&pro_micro 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // ENT → RC(3,5)
+        , <&pro_micro 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>  // RAISE → RC(3,6)
+        , <&pro_micro 9 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // ALT → RC(3,7)
         ;
     };
 };
