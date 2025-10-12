@@ -5,6 +5,11 @@
  */
 
 
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 / {
     chosen {
@@ -14,6 +19,7 @@
     kscan0: kscan {
         compatible = "zmk,kscan-gpio-direct";
         label = "KSCAN";
+        col-offset = <18>;
         
         input-gpios
         = <&pro_micro 1 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>   // Y
