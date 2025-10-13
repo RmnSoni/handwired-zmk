@@ -108,22 +108,6 @@
             >;
         };
 
-        // Mouse Layer (4)
-        mouse_layer {
-            display-name = "Mouse";
-// -----------------------------------------------------------------------------------------
-// |     |     |     |     |     |   | Redo| Paste| Copy| Cut | Undo|
-// | GUI | Alt | Ctrl| Shft|     |   |     |     |     |     |     |
-// |     |     |     |     |     |   |     |     |     |     |     |
-//             |     |     |     |   | Btn2| Btn1| Btn3|
-            bindings = <
-   &trans &trans &trans &trans &trans    &kp K_REDO &kp K_PASTE &kp K_COPY &kp K_CUT &kp K_UNDO
-   &kp LGUI &kp LALT &kp LCTRL &kp LSHFT &trans    &trans &trans &trans &trans &trans
-   &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans
-              &trans &trans &trans    &trans &trans &trans
-            >;
-        };
-
         // Sym Layer (5)
         sym_layer {
             display-name = "Sym";
